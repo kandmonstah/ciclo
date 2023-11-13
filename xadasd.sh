@@ -1,47 +1,19 @@
 #!/bin/bash
+clear
 
-funcao_prime_numbers() {
-    local num=$1
-    if [ $num -le 1 ]; then
-        return 1
+output_file1="Números_pares.txt"
+output_file2="Números_imparers.txt"
+arquivo="numeros.txt"
+
+if [ -e "$arquivo" ]; then
+  while IFS= read -r num1; do
+    if [ $((num1 % 2)) -eq 0 ]; then
+      echo "$num1 é par" >> "$output_file"
+    else
+      echo "$num1 é ímpar" >> "$output_file1"
     fi
-    for ((i = 2; i * i <= num; i++)); do
-        if [ $((num % i)) -eq 0 ]; then
-            return 1
-        fi
-    done
-    return 0
-
-    local num=$1
-    if [ $num -le 1 ]; then
-        return 1
-    fi
-    for ((i = 2; i * i <= num; i++)); do
-        if [ $((num % i)) -eq 0 ]; then
-            return 1
-        fi
-    done
-    return 0
-}
-if [ -e "numeros.txt" ]; then
-    echo "Números primos em numeros.txt:"
-    
-    while IFS= read -r linha; do
-        numero=$(echo "$linha" | tr -d ' ')
-        if [[ $numero =~ ^[0-9]+$ ]]; then
-            if funcao_prime_numbers "$numero"; then
-                echo $numero
-            fi
-        fi
-   
-if [ -e "numeros.txt" ]; then
-    echo "Números ímpares em numeros.txt:"
-
-     while IFS= read -r linha; do
-        numero=$(echo "$linha" | tr -d ' ')
-        if [[ $numero =~ ^[0-9]+$ ]]; then
-            if [ $((numero % 2)) -ne 0 ]; then
-                echo $numero
-            fi
-    done < "numeros.txt"
+  done < "$arquivo"
+  echo "Números pares e ímpares em $output_file"
+else
+  echo "O arquivo $arquivo não existe."
 fi
